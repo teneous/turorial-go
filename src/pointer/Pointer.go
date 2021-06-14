@@ -2,6 +2,9 @@ package main
 
 import "fmt"
 
+/**
+ * zhi
+ */
 func main() {
 	cmd := "gh clone repo"
 	showMemoryAddress(cmd)
