@@ -1,4 +1,4 @@
-package main
+package pointer
 
 //函数中传递对象只要是传递的指针则内部修改会对外部有影响
 func main() {

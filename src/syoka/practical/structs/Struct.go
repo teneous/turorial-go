@@ -1,4 +1,4 @@
-package main
+package structs
 
 import (
 	"fmt"
@@ -9,6 +9,7 @@ func main() {
 	fmt.Printf("%#v", car)
 }
 
+//Car is a demonstrate object
 type Car struct {
 	brand  string
 	price  int

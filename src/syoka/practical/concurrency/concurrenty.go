@@ -1,14 +1,13 @@
-package main
+// Package concurrency
+// 并发 测试
+package concurrency
 
 import (
 	"time"
 )
 
-func main() {
-	doSomeThing()
-}
-
-func doSomeThing() {
+//TestGoThread 测试多线程窒息
+func TestGoThread() {
 	go doSing()
 	go doDancing()
 	println("working")
@@ -16,15 +15,14 @@ func doSomeThing() {
 	time.Sleep(time.Second * 5)
 }
 
-//run new thread
+// thread a sing
 func doSing() {
 	time.Sleep(time.Second * 1)
 	println("sings")
 }
 
-//run new thread
+// thread b dancing
 func doDancing() {
 	time.Sleep(time.Second * 1)
-
 	println("dancing")
 }

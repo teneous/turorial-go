@@ -1,4 +1,4 @@
-package main
+package movie
 
 import (
 	"fmt"
@@ -11,17 +11,18 @@ func main() {
 	//对象调用方法
 	movie.summary()
 	//函数调用
-	summary(&movie)
+	Summary(&movie)
 }
 
+//Movie 电影结构
 type Movie struct {
 	name        string
 	actors      []string
 	releaseTime time.Time
 }
 
-//函数
-func summary(movie *Movie) {
+//Summary 电影介绍函数
+func Summary(movie *Movie) {
 	filmName := movie.name
 	filmActor := ""
 	for _, actor := range movie.actors {
@@ -36,7 +37,7 @@ func summary(movie *Movie) {
 	println()
 }
 
-//方法
+//Movie 电影对象介绍
 func (movie *Movie) summary() {
 	filmName := movie.name
 	filmActor := ""
