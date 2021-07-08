@@ -1,6 +1,8 @@
 package utils
 
-import "strings"
+import (
+	"strings"
+)
 
 func IsEmpty(str string) bool {
 	return len(strings.ReplaceAll(str, " ", "")) != 0
@@ -8,4 +10,8 @@ func IsEmpty(str string) bool {
 
 func IsNotEmpty(str string) bool {
 	return !IsEmpty(str)
+}
+
+func ToByte(str string) []byte {
+	return []byte(str)
 }
