@@ -5,6 +5,7 @@ package basic
 import (
 	"fmt"
 	"reflect"
+	"sort"
 	"testing"
 )
 
@@ -19,6 +20,10 @@ func TestAnnounce(t *testing.T) {
 	//announce size
 	sliceB := [5]int{1, 2, 3, 4, 5}
 	fmt.Printf("sliceB type is :%v \n", reflect.TypeOf(sliceB))
+
+	//array change to slice
+	sliceB2 := sliceB[1:]
+	fmt.Printf("sliceB2 type is :%v \n", reflect.TypeOf(sliceB2))
 
 	//slice
 	//make create
@@ -51,4 +56,35 @@ func TestSliceSubList(t *testing.T) {
 
 	sub[0] = -1
 	fmt.Printf("origin %+v , sub %+v \n", slices, sub)
+}
+
+//sort slice
+func TestSliceSort(t *testing.T) {
+	kevin := User{"kevin", 20}
+	tim := User{"tim", 19}
+	bob := User{"bob", 21}
+
+	users := []User{kevin, tim, bob}
+	fmt.Println("origin:", users)
+	sort.Slice(users, func(i, j int) bool {
+		return users[j].point > users[i].point
+	})
+	fmt.Println("origin:", users)
+}
+
+//test array deep clone
+func TestArrayDeepClone(t *testing.T) {
+	user := User{
+		name:  "zhangsan",
+		point: 123,
+	}
+	println("origin address \n", &user)
+	userArray := [1]User{}
+	userArray[0] = user
+	println("array address \n", &userArray[0])
+}
+
+type User struct {
+	name  string
+	point int
 }
