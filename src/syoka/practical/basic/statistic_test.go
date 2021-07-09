@@ -1,26 +1,22 @@
-package statistic
-
-import (
-	"bytes"
-	"fmt"
-	"time"
-)
-
 //测试bytebuffer和str的字符串拼接
 //测试结果，1000次 大约25倍
 //测试结果，10000次 大约100倍
 //测试结果，100000次 大约750倍
-func main() {
-	normalLoop("z")
-	println()
-	bufferLoop("c")
-}
+package basic
 
-func normalLoop(dupStr string) {
+import (
+	"bytes"
+	"fmt"
+	"testing"
+	"time"
+)
+
+func TestNormalLoop(t *testing.T) {
+	var str string = "z"
 	start := time.Now()
 	var result = ""
 	for i := 0; i < 100000; i++ {
-		result += dupStr
+		result += str
 	}
 	end := time.Now()
 
@@ -28,12 +24,13 @@ func normalLoop(dupStr string) {
 	fmt.Printf("normalLoop: 执行总时间:%d,结果长度%d", duration, len(result))
 }
 
-func bufferLoop(dupStr string) {
+func TestBufferLoop(t *testing.T) {
+	var str string = "z"
 	start := time.Now()
 	buffer := bytes.Buffer{}
 	var result = ""
 	for i := 0; i < 100000; i++ {
-		buffer.WriteString(dupStr)
+		buffer.WriteString(str)
 	}
 	result = buffer.String()
 	end := time.Now()
