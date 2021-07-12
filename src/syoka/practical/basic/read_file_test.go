@@ -10,7 +10,7 @@ import (
 
 //test read file
 func TestReadFile(t *testing.T) {
-	file, err := os.Open("../resources/file.properties")
+	file, err := os.Open("../../resources/file.properties")
 	if err != nil {
 		fmt.Printf("read file encounter exception")
 		return
