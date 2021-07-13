@@ -6,6 +6,13 @@ import (
 	"time"
 )
 
+type Node struct {
+	Parent *Node
+	Left   *Node
+	Right  *Node
+	Value  int
+}
+
 func TestCreatTree(t *testing.T) {
 	nodes := createNode(1 << 4)
 	root := &Node{nil, nil, nil, 8}
