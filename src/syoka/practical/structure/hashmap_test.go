@@ -14,14 +14,17 @@ type Element struct {
 }
 
 type HashMap struct {
-	table []Element
+	table []*Element
 	size  int64
 }
 
 func TestHashMap(t *testing.T) {
 	hashMap := NewHashMap()
 	element := NewElement("hello world")
+	element2 := NewElement("hello bilibili")
+
 	hashMap.AddElement(element)
+	hashMap.AddElement(element2)
 }
 
 //AddElement method add
@@ -35,15 +38,13 @@ func (hashMap *HashMap) AddElement(element *Element) bool {
 	table := hashMap.table
 	index := calculateHash(element.hashcode, hashMap.size)
 	root := table[index]
-	if &root != nil {
-		deep := recursively(&root)
+	if root != nil {
+		deep := findNextElementRecursively(root)
 		deep.next = element
-		return true
 	} else {
-		e := element
-		table[index] = *e
+		table[index] = element
 	}
-	return false
+	return true
 }
 
 //NewHashMap construct
@@ -80,14 +81,15 @@ func calculateHash(val int64, size int64) int64 {
 	return 0
 }
 
-func recursively(element *Element) *Element {
+func findNextElementRecursively(element *Element) *Element {
 	if element.next == nil {
 		return element
 	} else {
-		return recursively(element.next)
+		return findNextElementRecursively(element.next)
 	}
 }
 
-func initTable(size int64) []Element {
-	return make([]Element, size)
+func initTable(size int64) []*Element {
+	elements := make([]*Element, size)
+	return elements
 }
