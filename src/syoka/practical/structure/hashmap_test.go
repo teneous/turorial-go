@@ -1,15 +1,20 @@
+//customized hashmap ref by java
+//hash function is not a properly implementation
 package structure
 
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"github.com/stretchr/testify/assert"
 	"strconv"
+	"strings"
 	"testing"
 )
 
 type Element struct {
-	hashcode int64
+	key      string
 	val      string
+	hashcode int64
 	next     *Element
 }
 
@@ -19,12 +24,20 @@ type HashMap struct {
 }
 
 func TestHashMap(t *testing.T) {
-	hashMap := NewHashMap()
-	element := NewElement("hello world")
-	element2 := NewElement("hello bilibili")
+	hashMap := NewHashMap(1 << 3)
 
-	hashMap.AddElement(element)
-	hashMap.AddElement(element2)
+	hello := NewElement("hello", "world")
+	nihao := NewElement("nihao", " syoka")
+	mergeHello := NewElement("hello", "bilibili")
+	bonjour := NewElement("bonjour", " friends")
+
+	hashMap.AddElement(hello)
+	hashMap.AddElement(nihao)
+	hashMap.AddElement(mergeHello)
+	hashMap.AddElement(bonjour)
+
+	value := hashMap.GetElement("hello")
+	assert.True(t, strings.Compare(value, "bilibili") == 0, "hello should return bilibili")
 }
 
 //AddElement method add
@@ -36,56 +49,95 @@ func (hashMap *HashMap) AddElement(element *Element) bool {
 		hashMap.table = initTable(hashMap.size)
 	}
 	table := hashMap.table
-	index := calculateHash(element.hashcode, hashMap.size)
-	root := table[index]
-	if root != nil {
-		deep := findNextElementRecursively(root)
-		deep.next = element
+	index := calculateIndex(element.hashcode, hashMap.size)
+	tableRoot := table[index]
+	if tableRoot != nil {
+		findElementRecursively(tableRoot, element)
 	} else {
 		table[index] = element
 	}
 	return true
 }
 
+//GetElement get element by key
+func (hashMap *HashMap) GetElement(key string) string {
+	if hashMap.table == nil {
+		panic("hashmap not initial")
+	}
+	hashCode := hash(key)
+	index := calculateIndex(hashCode, hashMap.size)
+	table := hashMap.table
+	if table[index] == nil {
+		//data not found
+		return ""
+	}
+	return findElementByKey(table[index], key)
+}
+
 //NewHashMap construct
-func NewHashMap() *HashMap {
+func NewHashMap(size int64) *HashMap {
 	return &HashMap{
+		//lazy initial
 		table: nil,
-		size:  16,
+		size:  size,
 	}
 }
 
 //NewElement construct
-func NewElement(val string) *Element {
+func NewElement(key string, val string) *Element {
+	hashcode := hash(key)
+	return &Element{
+		key:      key,
+		val:      val,
+		next:     nil,
+		hashcode: hashcode,
+	}
+}
+
+func findElementByKey(element *Element, key string) string {
+	if element == nil {
+		return ""
+	} else {
+		if element.key == key {
+			return element.val
+		} else {
+			return findElementByKey(element.next, key)
+		}
+	}
+}
+
+func hash(key string) int64 {
 	m := md5.New()
-	m.Write([]byte(val))
+	m.Write([]byte(key))
 	hexStr := hex.EncodeToString(m.Sum(nil))
 	//prevent out of range
 	newHex := hexStr[:10]
 	hashcode, err := strconv.ParseInt(newHex, 16, 64)
 	if err == nil {
-		return &Element{
-			next:     nil,
-			val:      val,
-			hashcode: hashcode,
-		}
+		return hashcode
 	}
-	return nil
+	return -1
 }
 
-//calculateHash calculate hash code
-func calculateHash(val int64, size int64) int64 {
+//calculateIndex calculate hash code
+func calculateIndex(val int64, size int64) int64 {
 	if size != 0 {
 		return val % size
 	}
 	return 0
 }
 
-func findNextElementRecursively(element *Element) *Element {
-	if element.next == nil {
-		return element
+//findElementRecursively compare key then replace it when match
+//when hashcode are the same,then add it at tail
+func findElementRecursively(element *Element, target *Element) {
+	if element.key == target.key {
+		element.val = target.val
 	} else {
-		return findNextElementRecursively(element.next)
+		if element.next == nil {
+			element.next = target
+		} else {
+			findElementRecursively(element.next, target)
+		}
 	}
 }
 
