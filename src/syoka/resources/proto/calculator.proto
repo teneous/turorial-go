@@ -1,9 +1,13 @@
 syntax = "proto3";
 
-//缺省补偿
 package calculator;
 
+option java_multiple_files = true;
+option java_generic_services = true;
+option java_package = "com.syoka.grpc";
+option java_outer_classname = "CalculatorService";
 option go_package = "./grpc";
+
 
 service Calculator {
   rpc Add (Element) returns (Result) {}

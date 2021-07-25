@@ -8,5 +8,5 @@ brew install protobuf
 
 ### generate proto go
 
-protoc --go_out=plugins=grpc:../../practical calculator.proto
+protoc --go_out=plugins=grpc:./../practical calculator.proto
 

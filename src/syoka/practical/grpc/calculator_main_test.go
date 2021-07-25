@@ -10,11 +10,10 @@ func TestCalculatorGrpc(t *testing.T) {
 
 	server, err := net.Listen("tcp", ":9999")
 	if err == nil {
-		calculator := GoCalculator{}
-		gNewServer := grpc.NewServer()
-		RegisterCalculatorServer(gNewServer, &calculator)
-
+		cal := Calculator{}
 		grpcServer := grpc.NewServer()
+		RegisterCalculatorServer(grpcServer, &cal)
+
 		grpcServer.Serve(server)
 	}
 }
