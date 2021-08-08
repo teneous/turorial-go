@@ -2,6 +2,8 @@
 
 personal go practical demo
 
+Each test case is a basic feature of go
+
 ## Basic Language Grammar learning
 
 ## Contributing
